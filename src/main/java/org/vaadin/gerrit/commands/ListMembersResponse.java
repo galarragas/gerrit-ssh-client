@@ -5,6 +5,7 @@ import org.vaadin.gerrit.Member;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class ListMembersResponse implements GerritResponse {
 
@@ -32,15 +33,15 @@ public class ListMembersResponse implements GerritResponse {
 
     @Override
     public String getErrorMessage() {
-        return getFirstLine();
+        return getFirstLine().orElse("");
     }
 
     private boolean hasHeaders() {
-        return getNumberOfColumns(getFirstLine()) >= 4;
+        return getFirstLine().map(firstLine -> getNumberOfColumns(firstLine) >= 4).orElse(false);
     }
 
-    private String getFirstLine() {
-        return lines.get(0);
+    private Optional<String> getFirstLine() {
+        return lines.stream().findFirst();
     }
 
     private int getNumberOfColumns(String line) {

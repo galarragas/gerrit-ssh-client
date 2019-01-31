@@ -20,7 +20,10 @@ public class ListMembersCommandTest {
         sut = new ListMembersCommand("foobar");
 
         connection = mock(GerritConnection.class);
-        when(connection.executeCommand(anyString())).thenReturn("foo");
+        when(connection.executeCommand(anyString())).thenReturn(
+                "id\tusername\tfull name\temail\n" +
+                "100000\tjim\tJim Bob\tsomebody@example.com"
+        );
     }
 
     @Test
@@ -43,7 +46,7 @@ public class ListMembersCommandTest {
         try {
             return sut.getResponse(connection);
         } catch (GerritClientException e) {
-            fail(e.getMessage());
+            fail("Exception got when calling response '" + e.getMessage() + "");
         }
 
         return null;
