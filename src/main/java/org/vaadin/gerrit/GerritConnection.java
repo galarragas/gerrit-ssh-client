@@ -16,12 +16,14 @@ import java.util.Properties;
 public class GerritConnection {
     private final JSch jsch;
     private final String host;
+    private final int port;
     private final Credentials credentials;
 
     @Inject
-    public GerritConnection(JSch jsch, @Assisted String host, @Assisted Credentials credentials) {
+    public GerritConnection(JSch jsch, @Assisted String host, @Assisted int port, @Assisted Credentials credentials) {
         this.jsch = jsch;
         this.host = host;
+        this.port = port;
         this.credentials = credentials;
     }
 
@@ -51,7 +53,7 @@ public class GerritConnection {
     private Session openSession() throws JSchException {
         addIdentity();
 
-        Session session = jsch.getSession(credentials.getUsername(), host, 29418);
+        Session session = jsch.getSession(credentials.getUsername(), host, port);
         Properties properties = System.getProperties();
         properties.put("StrictHostKeyChecking", "no");
 

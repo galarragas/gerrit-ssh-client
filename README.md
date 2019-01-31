@@ -27,4 +27,4 @@ Member member = client.getMemberFromGroup(1234, "The Best of Users");
 
 Need a feature? Just send in a pull request.
 
-Oh and when running *mvn integration-test*, remember to use -Dusername=&lt;username&gt; and -Dhost=&lt;host&gt;
+Oh and when running *mvn integration-test*, remember to use -Dusername=&lt;username&gt; and -Dhost=&lt;host&gt; and -Dport=&lt;port&gt; -Dprivatekey=&lt;private_key_file_path&gt;;

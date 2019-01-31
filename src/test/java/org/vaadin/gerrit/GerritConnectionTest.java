@@ -24,6 +24,7 @@ public class GerritConnectionTest {
 
     private final String username = "foo";
     private final String host = "bar";
+    private final int port = 22;
     private final String command = "foobar";
 
     JSch jsch;
@@ -44,7 +45,7 @@ public class GerritConnectionTest {
         when(session.openChannel(anyString())).thenReturn(channel);
         mockChannelToReturn("");
 
-        sut = new GerritConnection(jsch, host, credentials);
+        sut = new GerritConnection(jsch, host, port, credentials);
     }
 
     private void mockChannelToReturn(String response) throws IOException {
@@ -76,7 +77,7 @@ public class GerritConnectionTest {
 
         executeCommand();
 
-        verify(jsch).getSession(username, host, 29418);
+        verify(jsch).getSession(username, host, port);
     }
 
     @Test

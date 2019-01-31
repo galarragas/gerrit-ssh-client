@@ -13,23 +13,30 @@ import java.util.Optional;
 
 public class GerritClient {
 
+    public static final int DEFAULT_PORT = 29418;
     private final String host;
+    private final int port;
     private final Credentials credentials;
     private final CommandFactory commandFactory;
     private final GerritConnectionFactory connectionFactory;
 
     public GerritClient(String host, Credentials credentials) {
-        this(Guice.createInjector(new GerritClientModule()), host, credentials);
+        this(host, DEFAULT_PORT, credentials);
     }
 
-    private GerritClient(Injector injector, String host, Credentials credentials) {
-        this(injector.getInstance(CommandFactory.class), injector.getInstance(GerritConnectionFactory.class), host, credentials);
+    public GerritClient(String host, int port, Credentials credentials) {
+        this(Guice.createInjector(new GerritClientModule()), host, port, credentials);
     }
 
-    GerritClient(CommandFactory commandFactory, GerritConnectionFactory connectionFactory, String host, Credentials credentials) {
+    private GerritClient(Injector injector, String host, int port, Credentials credentials) {
+        this(injector.getInstance(CommandFactory.class), injector.getInstance(GerritConnectionFactory.class), host, port, credentials);
+    }
+
+    GerritClient(CommandFactory commandFactory, GerritConnectionFactory connectionFactory, String host, int port, Credentials credentials) {
         this.commandFactory = commandFactory;
         this.connectionFactory = connectionFactory;
         this.host = host;
+        this.port = port;
         this.credentials = credentials;
     }
 
@@ -37,7 +44,7 @@ public class GerritClient {
         ListMembersCommand command = commandFactory.createListMembersCommand(groupName);
         command.setRecursive(true);
 
-        GerritConnection connection = connectionFactory.getConnection(host, credentials);
+        GerritConnection connection = connectionFactory.getConnection(host, port, credentials);
 
         ListMembersResponse response = command.getResponse(connection);
 

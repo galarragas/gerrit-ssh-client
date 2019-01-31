@@ -3,25 +3,34 @@ package org.vaadin.gerrit.commands;
 import org.vaadin.gerrit.Member;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class ListMembersResponse {
+public class ListMembersResponse implements GerritResponse {
 
-    private List<String> lines;
-
-    public ListMembersResponse(String response) {
+    public static ListMembersResponse fromCommandOutput(String response) {
+        final List<String> lines;
         if(response != null) {
-
             lines = Arrays.asList(response.split(System.lineSeparator()));
         } else {
-            lines = Arrays.asList(new String[] { "" });
+            lines = Collections.emptyList();
         }
+
+        return new ListMembersResponse(lines);
     }
 
+    private final List<String> lines;
+
+    private ListMembersResponse(List<String> lines) {
+        this.lines = lines;
+    }
+
+    @Override
     public boolean hasErrors() {
         return !hasHeaders();
     }
 
+    @Override
     public String getErrorMessage() {
         return getFirstLine();
     }
@@ -42,7 +51,7 @@ public class ListMembersResponse {
             return lines.stream()
                         .skip(1)
                         .map(this::getMember)
-                        .toArray(size -> new Member[size]);
+                        .toArray(Member[]::new);
     }
 
     private Member getMember(String line) {

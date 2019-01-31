@@ -27,6 +27,7 @@ import static org.mockito.Mockito.*;
 public class GerritClientTest {
 
     private final String host = "host";
+    private final int port = 922;
     private GerritClient sut;
     private ListMembersCommand listMembersCommand;
     private ListMembersResponse listMembersResponse;
@@ -43,7 +44,7 @@ public class GerritClientTest {
     public void setup() throws GerritClientException {
         credentials = mock(Credentials.class);
 
-        sut = new GerritClient(commandFactory, this.connectionFactory, host, credentials);
+        sut = new GerritClient(commandFactory, this.connectionFactory, host, port, credentials);
 
         listMembersCommand = mock(ListMembersCommand.class);
         listMembersResponse = mock(ListMembersResponse.class);
@@ -67,7 +68,7 @@ public class GerritClientTest {
     public void listMembersConnectionIsCreated() throws Exception {
         getGroupMembers();
 
-        verify(connectionFactory).getConnection(host, credentials);
+        verify(connectionFactory).getConnection(host, port, credentials);
     }
 
     @Test
@@ -110,8 +111,8 @@ public class GerritClientTest {
 
     private Member[] getMembers(int... ids) {
         return IntStream.of(ids)
-                .mapToObj(i -> getMember(i))
-                .toArray(s -> new Member[s]);
+                .mapToObj(this::getMember)
+                .toArray(Member[]::new);
     }
 
     private Member getMember(int id) {

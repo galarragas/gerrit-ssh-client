@@ -5,7 +5,7 @@ import com.google.inject.assistedinject.Assisted;
 import org.vaadin.gerrit.GerritClientException;
 import org.vaadin.gerrit.GerritConnection;
 
-public class ListMembersCommand {
+public class ListMembersCommand extends GerritCommand<ListMembersResponse> {
     private boolean recursive;
     private final String groupName;
 
@@ -20,15 +20,15 @@ public class ListMembersCommand {
         this.recursive = recursive;
     }
 
-    private String getCommand() {
+    @Override
+    protected String getCommand() {
         //GroupName has to escaped: https://code.google.com/p/gerrit/issues/detail?id=2589
         return String.format("gerrit ls-members '%s'%s", groupName, recursive ? " --recursive" : "");
     }
 
-    public ListMembersResponse getResponse(GerritConnection connection) throws GerritClientException {
-        String response = connection.executeCommand(getCommand());
-
-        return new ListMembersResponse(response);
+    @Override
+    protected ListMembersResponse parseCommandOutput(String commandOutput) {
+        return ListMembersResponse.fromCommandOutput(commandOutput);
     }
 }
 

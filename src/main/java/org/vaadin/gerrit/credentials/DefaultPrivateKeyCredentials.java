@@ -12,7 +12,11 @@ public class DefaultPrivateKeyCredentials extends Credentials {
         String home = System.getProperty("user.home");
         home = home == null ? new File(".").getAbsolutePath() : new File(home).getAbsolutePath();
 
-        return new File(new File(home, ".ssh"), "id_rsa").getAbsolutePath();
+        final String result = new File(new File(home, ".ssh"), "id_rsa").getAbsolutePath();
+
+        System.out.println(String.format("Using key at path '%s'", result));
+
+        return result;
     }
 }
 

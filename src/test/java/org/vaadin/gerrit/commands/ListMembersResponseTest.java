@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class ListMembersResponseTest {
 
     private ListMembersResponse getResponse(String response) {
-        return new ListMembersResponse(response);
+        return ListMembersResponse.fromCommandOutput(response);
     }
 
     @Test
