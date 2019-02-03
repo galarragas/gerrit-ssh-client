@@ -110,8 +110,13 @@
                 <configuration>
                     <groups>org.vaadin.gerrit.IntegrationTest</groups>
                     <systemPropertyVariables>
-                        <gerrit.ssh.port>${gerrit.ssh.port}</gerrit.ssh.port>
-                        <gerrit.http.port>${gerrit.http.port}</gerrit.http.port>
+                        <port>${gerrit.ssh.port}</port>
+                        <httpport>${gerrit.http.port}</httpport>
+                        <host>localhost</host>
+                        <privatekey>./src/test/resources/id_rsa</privatekey>
+                        <publickey>./src/test/resources/id_rsa.pub</publickey>
+                        <username>admin</username>
+                        <adminpwd>secret</adminpwd>
                         <log.url>Gerrit available at http://localhost:${gerrit.http.port} and ssh -p ${gerrit.ssh.port} localhost</log.url>
                     </systemPropertyVariables>
                 </configuration>
@@ -149,7 +154,7 @@
                                     <port>gerrit.http.port:8080</port>
                                 </ports>
                                 <wait>
-                                    <log>Gerrit Code Review .+ ready</log>
+                                    <log>plugins successfully pre-loaded</log>
                                     <time>30000</time>
                                 </wait>
                                 <log>

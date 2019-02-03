@@ -17,6 +17,7 @@ hs_err_pid*
 #IDEA
 .idea
 *.iml
+.Dockerfile.swp
 
 ### Maven ###
 target/
