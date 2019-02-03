@@ -154,8 +154,8 @@
                                     <port>gerrit.http.port:8080</port>
                                 </ports>
                                 <wait>
-                                    <log>plugins successfully pre-loaded</log>
-                                    <time>30000</time>
+                                    <log>.+ plugins successfully pre-loaded</log>
+                                    <time>60000</time>
                                 </wait>
                                 <log>
                                     <enabled>true</enabled>
